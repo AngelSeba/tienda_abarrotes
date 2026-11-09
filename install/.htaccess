@@ -1,0 +1,4 @@
+Options -Indexes
+<FilesMatch "(?i)(^\.|^(funciones|clave_instalacion)\.php$|\.(sql|log|lock|mutex|tmp)$)">
+    Require all denied
+</FilesMatch>

@@ -1,0 +1,12 @@
+<?php
+require_once __DIR__ . '/../conexion.php'; require_once __DIR__ . '/../funciones.php'; protegerSesion();
+if (esAdministrador()) { http_response_code(403); exit('Solo clientes.'); }
+$etiquetasEstado = ['confirmado'=>'Confirmado','preparando'=>'En preparación','entregado'=>'Entregado','cancelado'=>'Cancelado'];
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if (!$id || $id < 1) { http_response_code(404); exit('Pedido no encontrado.'); }
+$stmt = $pdo->prepare('SELECT id, total, fecha, estado FROM pedidos WHERE id = ? AND usuario_id = ?');
+$stmt->execute([$id, (int)$_SESSION['usuario']['id']]); $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$pedido) { http_response_code(404); exit('Pedido no encontrado.'); }
+$stmt = $pdo->prepare('SELECT producto_nombre, cantidad, precio_unitario, subtotal FROM pedido_detalles WHERE pedido_id = ?'); $stmt->execute([$id]); $detalles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Detalle de compra | <?= tcEsc(tiendaNombre()) ?></title><link rel="stylesheet" href="../css/estilo.css"><?= tiendaEstilos('../') ?></head><body><header class="topbar"><div class="brand"><?= tiendaMarca('../') ?></div></header><div class="layout"><aside class="sidebar"><a href="index.php">🛍️ Productos</a><a href="carrito.php">🛒 Carrito</a><a href="mis_compras.php">📦 Mis compras</a></aside><main class="content"><div class="page-header"><h1>Pedido #<?= (int)$pedido['id'] ?></h1></div><p>Fecha: <?= htmlspecialchars($pedido['fecha']) ?></p><p><strong>Estado:</strong> <?= htmlspecialchars($etiquetasEstado[$pedido['estado']] ?? $pedido['estado']) ?></p><?php if ($pedido['estado'] === 'cancelado'): ?><div class="alert error">Pedido cancelado. El ticket conserva el registro histórico; no acredita un cobro ni un reembolso.</div><?php endif; ?><div class="table-container"><table><thead><tr><th>Producto</th><th>Cantidad</th><th>Precio unitario</th><th>Subtotal</th></tr></thead><tbody><?php foreach ($detalles as $d): ?><tr><td><?= htmlspecialchars($d['producto_nombre']) ?></td><td><?= (int)$d['cantidad'] ?></td><td>$<?= number_format((float)$d['precio_unitario'], 2) ?></td><td>$<?= number_format((float)$d['subtotal'], 2) ?></td></tr><?php endforeach; ?></tbody></table></div><h2>Total: $<?= number_format((float)$pedido['total'],2) ?> MXN</h2><a class="btn" href="mis_compras.php">Volver a mis compras</a></main></div></body></html>

@@ -1,0 +1,4 @@
+Options -Indexes
+<Files "funciones.php">
+    Require all denied
+</Files>

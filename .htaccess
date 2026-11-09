@@ -1,0 +1,4 @@
+Options -Indexes
+<FilesMatch "(?i)(^\.|^config_.*\.php$|\.(sql|log|bak|zip|rar|md|lock|mutex|tmp)$|^composer\.(json|lock)$)">
+    Require all denied
+</FilesMatch>

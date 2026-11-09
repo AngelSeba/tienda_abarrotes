@@ -1,0 +1,1 @@
+.exportar-enlaces{display:flex;flex-wrap:wrap;gap:12px;margin:15px 0}.exportar-enlaces a{display:inline-block;text-decoration:none}.exportaciones h2{margin:0}.exportaciones .nota{margin-bottom:0}@media(max-width:640px){.exportar-enlaces{display:grid;grid-template-columns:1fr}.exportar-enlaces a{text-align:center}}@media print{.exportaciones{display:none}}

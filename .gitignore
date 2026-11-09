@@ -1,0 +1,34 @@
+# Configuración local, credenciales y sesiones de instalación
+/config_database.php
+/config_correo.php
+/instalado.lock
+/.instalacion*
+/install/clave_instalacion.php
+/tareas/config_php_laragon.bat
+.env
+.env.*
+!.env.example
+# Datos de negocio y respaldos
+*.sql
+!/install/esquema.sql
+!/migraciones/*.sql
+*.zip
+*.rar
+*.bak
+*.log
+*.tmp
+*.pdf
+/respaldos_privados/
+/productos/imagenes/*
+!/productos/imagenes/.htaccess
+!/productos/imagenes/.gitkeep
+/assets/marca/*
+!/assets/marca/.htaccess
+!/assets/marca/.gitkeep
+# Composer: el ZIP incluye vendor para instalar sin descargarlo; en Git se reconstruye
+/vendor/
+# Archivos del editor y sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
